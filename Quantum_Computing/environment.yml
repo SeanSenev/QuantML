@@ -1,0 +1,11 @@
+name: environment
+channels:
+  - conda-forge
+dependencies:
+  - pypfopt
+  - yfinance
+  - matplotlib
+  - pandas
+  - qiskit
+  - warnings
+  - datetime
