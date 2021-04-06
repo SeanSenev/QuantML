@@ -1,7 +1,6 @@
 To run this Notebook:
 
-Copy and paste this URL into your clipboard
-- https://github.com/SeanSenev/QuantML/
+Copy and paste this URL into your clipboard https://github.com/SeanSenev/QuantML/
 
 visit mybinder.org and paste the GitHub URL into the first field "GitHub repository name or URL"
 
