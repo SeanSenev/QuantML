@@ -21,8 +21,8 @@ import pandas as pd
 # import numpy as np
 # import matplotlib.pyplot as plt
 
-APCA_API_KEY_ID = 'PKFKM6KPI1COLEQEMB7Y'
-APCA_API_SECRET_KEY = 'GWDe2JErqsrB3A6ScplTdaWjDLelqKNl5Gmz3zcW'
+APCA_API_KEY_ID = ''
+APCA_API_SECRET_KEY = ''
 APCA_API_BASE_URL = 'https://paper-api.alpaca.markets'
 
 # Setting up API and account details
