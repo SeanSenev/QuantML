@@ -13,13 +13,13 @@
 # IF 5 DAY > 30 DAY -> BUY
     # IF NOT -> SELL OR IGNORE
 
-# UPDATES: EVENTUALLY CHANGE ALPACA_TRADE_API TO V 1.0
-
-import requests
+# import requests
 import alpaca_trade_api as tradeapi
+from alpaca_trade_api.rest import TimeFrame
+# from alpaca_trade_api.rest import REST
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+# import numpy as np
+# import matplotlib.pyplot as plt
 
 APCA_API_KEY_ID = 'PKFKM6KPI1COLEQEMB7Y'
 APCA_API_SECRET_KEY = 'GWDe2JErqsrB3A6ScplTdaWjDLelqKNl5Gmz3zcW'
@@ -30,15 +30,17 @@ api = tradeapi.REST(
     APCA_API_KEY_ID,
     APCA_API_SECRET_KEY,
     base_url=APCA_API_BASE_URL,
-    api_version='v2'
-    )
+    api_version='v2')
 
 account = api.get_account()
 account.status
 api.list_positions()
 
 # Getting all assets
-assets = api.list_assets()  # status = "active", asset_class = "us_equity")
+assets = api.list_assets(
+    status="active",
+    asset_class="us_equity")
+
 assets[0]
 
 datalist = []
@@ -49,9 +51,9 @@ for counter, value in enumerate(assets):
         assets[counter].name,
         assets[counter].status,
         assets[counter].tradable,
-        assets[counter].easy_to_borrow
-        ])  # Append all data to list
-datalist
+        assets[counter].easy_to_borrow])  # Append all data to list
+
+datalist[0:10]
 
 # Maybe can skip this stuff with updated list assets
 asset_df = pd.DataFrame(
@@ -61,29 +63,43 @@ asset_df = pd.DataFrame(
         'name',
         'status',
         'tradable',
-        'easy_to_borrow'
-        ]
-    )  # Create dataframe from list of stock data
+        'easy_to_borrow'])  # Create dataframe from list of stock data
 
 asset_df.set_index('symbol', inplace=True)  # Set index of dataframe to Symbol
-# asset_df.index.values[0:10]
-canTrade = asset_df[asset_df['tradable'] == True]  # Check if asset is tradable
-canTrade
-canTradeNumber = len(canTrade)
-canTradeNumber
+asset_df.index.values[0:10]
 
-trial = canTrade[0:10]
+trial = asset_df[0:10]
+trial
+trial.index
+
+results = []
+
+for ticker in trial.index:
+    print(ticker)
+    results.append(api.get_bars(
+        ticker,
+        TimeFrame.Day,
+        "2021-02-15",
+        "2021-02-16",
+        limit=1))
+
+results
 
 # FIXME: For every asset get one day bar, put into list, make list into DF
 
 api.get_bars(
     "AAPL",
-    "timeframe.hour",
+    TimeFrame.Hour,
     "2021-02-08",
-    "2021-0208",
-    limit=10,
-    adjustment='raw'
-    )
+    "2021-02-08",
+    limit=10)
+
+api.get_bars(
+    "AAPL",
+    TimeFrame.Day,
+    "2021-02-15",
+    "2021-02-15",
+    limit=1)
 
 bar_iter = api.get_bars_iter(
     "AAPL",
@@ -142,10 +158,6 @@ len(goodTable)
 tradeWorthy = goodTable[(goodTable['close'] < 50) & (goodTable['volume'] > 100000)]  # Edit these values for what reasonable
 len(tradeWorthy)
 tradeWorthy.head()
-
-
-aapl_data = api.get_barset('AAPL', 'day', start=minus_time, end=end).df
-aapl_data
 
 # Simple Moving Average Calculations
 # Update: Get last index programatically
