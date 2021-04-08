@@ -20,12 +20,12 @@ if not args.strategy in strategies:
 cerebro = bt.Cerebro()
 cerebro.broker.setcash(100000)
 
-spy_prices = pd.read_csv("/Users/sean/Desktop/QuantML/Algorithm/data/SPY.csv", index_col="Date", parse_dates=True)
+spy_prices = pd.read_csv("/Users/sean/Desktop/QuantML/Algorithm/data/BTC-USD.csv", index_col="Date", parse_dates=True)
 
 feed = bt.feeds.PandasData(dataname=spy_prices)
 cerebro.adddata(feed)
 
-cerebro.addstrategy(strategies[args.strategy])
+cerebro.addstrategy(GoldenCross])
 cerebro.run()
 cerebro.plot()
 
